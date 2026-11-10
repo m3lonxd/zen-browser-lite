@@ -1,4 +1,0 @@
-extension-firefox-compact-galaxy-name = NexBrowser Galaxy
-extension-firefox-compact-galaxy-description = Motyw z ciemnym kolorem i ładnym dotykiem galaktycznym!
-extension-firefox-compact-dream-name = Marzenie NexBrowser
-extension-firefox-compact-dream-description = Motyw z jasnym schematem kolorów i ładnym snem!
