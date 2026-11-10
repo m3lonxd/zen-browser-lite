@@ -1,0 +1,12 @@
+Zen Browser logo
+
+File:    docs/assets/zen-logo.svg (also embedded, unmodified, in docs/assets/banner.svg)
+Source:  https://github.com/zen-browser/branding-archive
+         Official/Word Marks/SVG/zen_logo_icon_color.svg (commit fad9cfe)
+Author:  The Zen Browser team
+Licence: Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+         https://creativecommons.org/licenses/by-nc-sa/4.0/
+Changes: none. The file is used unmodified.
+
+Zen Browser Lite is an unofficial, non-commercial project and is not affiliated
+with or endorsed by the Zen Browser team.

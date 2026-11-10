@@ -52,8 +52,14 @@ Tüm ayarlar *varsayılan* değer olarak kurulur. `about:config` veya Ayarlar'da
 
 **max**, site izolasyonunu (Fission) kapatır. Farklı sitelerin sayfaları yine aynı süreci paylaşabilir. Bu durumda bir sekmedeki istismar veya Spectre tarzı bir saldırı, diğer sitelerin verilerinden yalıtılmış olmaz. Ölçümde max yalnızca tüm sekmeler yüklüyken daha iyiydi: Zen'e göre %20 daha az, lite'ta %13. Sekmeler uyutulduktan sonra lite'tan iyi değildi (−%55'e karşı −%60).
 
+## Teşekkür ve atıf
+
+- **[Zen Browser](https://github.com/zen-browser/desktop)**: Zen ekibi. Bu projenin kurup ayarladığı tarayıcı. MPL-2.0.
+- **Zen logosu** (`docs/assets/zen-logo.svg`, `docs/assets/banner.svg` içinde de): Zen ekibi, [zen-browser/branding-archive](https://github.com/zen-browser/branding-archive) deposundan, [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.tr) lisansıyla, değiştirilmeden kullanıldı. Ayrıntı: [`docs/assets/ZEN-LOGO-NOTICE.txt`](./docs/assets/ZEN-LOGO-NOTICE.txt).
+- **[Firefox](https://www.mozilla.org/firefox/)**: Mozilla. Zen'in altındaki motor ve sekme uyutucuyu çalıştıran AutoConfig mekanizması.
+
 ## Hukuki not
 
-Zen Browser Lite **resmî olmayan**, bağımsız bir projedir. Zen Browser ekibi veya Mozilla ile bağlantısı yoktur ve onlar tarafından onaylanmamıştır. "Zen Browser", logosu ve "Firefox" sahiplerine aittir. Bu depo Zen'i yeniden dağıtmaz ve Zen'in logosunu içermez. Kurulum betiği değiştirilmemiş resmi sürümü indirir. Zen ekibi farklı bir ad isterse proje yeniden adlandırılır. Lisans: MPL-2.0.
+Zen Browser Lite **resmî olmayan**, bağımsız ve ticari olmayan bir projedir. Zen Browser ekibi veya Mozilla ile bağlantısı yoktur ve onlar tarafından onaylanmamıştır. "Zen Browser" ve "Firefox" adları sahiplerine aittir. Bu depo Zen'i yeniden dağıtmaz; kurulum betiği değiştirilmemiş resmi sürümü indirir. Zen ekibi farklı bir ad isterse proje yeniden adlandırılır. Kendi dosyalarımızın lisansı: MPL-2.0.
 
 Bu depoda önceden **NexBrowser** adlı tam bir Zen çatalı vardı. O kod [`archive/nexbrowser-fork`](https://github.com/m3lonxd/zen-browser-lite/tree/archive/nexbrowser-fork) dalında duruyor.

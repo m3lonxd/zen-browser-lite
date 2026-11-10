@@ -126,9 +126,15 @@ bash install.sh --uninstall
 
 This removes `~/.local/opt/zen-lite`, the `zen-lite` command, and the menu entry. Browser profiles in `~/.zen` are left alone.
 
+## Credits
+
+- **[Zen Browser](https://github.com/zen-browser/desktop)** by the Zen team, the browser this project installs and configures. MPL-2.0.
+- **Zen logo** (`docs/assets/zen-logo.svg`, also inside `docs/assets/banner.svg`) by the Zen team, from [zen-browser/branding-archive](https://github.com/zen-browser/branding-archive), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Used unmodified; see [`docs/assets/ZEN-LOGO-NOTICE.txt`](./docs/assets/ZEN-LOGO-NOTICE.txt).
+- **[Firefox](https://www.mozilla.org/firefox/)** by Mozilla, the engine underneath Zen, and its [AutoConfig](https://support.mozilla.org/kb/customizing-firefox-using-autoconfig) mechanism that runs the tab unloader.
+
 ## Legal
 
-Zen Browser Lite is an **unofficial**, independent project. It is not affiliated with or endorsed by the Zen Browser team or Mozilla. "Zen Browser", its logo and "Firefox" belong to their respective owners. The name says what this project sets up; this repository does not contain Zen's logo. The menu entry shows the icon that ships inside the official Zen build you download. If the Zen team asks for a different name, the project will be renamed.
+Zen Browser Lite is an **unofficial**, independent, non-commercial project. It is not affiliated with or endorsed by the Zen Browser team or Mozilla. "Zen Browser" and "Firefox" belong to their respective owners; the name only says what this project sets up. If the Zen team asks for a different name, the project will be renamed.
 
 Zen Browser Lite does not redistribute Zen. The installer downloads the unmodified official release from [github.com/zen-browser/desktop](https://github.com/zen-browser/desktop/releases), verifies it and adds Zen Browser Lite's own files. Zen is licensed under the [MPL-2.0](https://github.com/zen-browser/desktop/blob/dev/LICENSE); Zen Browser Lite's files are MPL-2.0 too.
 

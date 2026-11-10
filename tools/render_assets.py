@@ -18,12 +18,12 @@ REPO = Path(__file__).resolve().parent.parent
 
 FONT_SANS = "Inter, -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif"
 FONT_MONO = "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
-MINT = "#3ddc84"
-TEAL = "#2fd3c4"
+MINT = "#f76f53"  # Zen coral
+TEAL = "#6287f5"  # Zen blue
 VARIANT_STYLE = {
-    "stock": ("Zen (stock)", "#6b7a74"),
-    "lite": ("Lite tier", TEAL),
-    "max": ("Max tier", MINT),
+    "stock": ("Zen (stock)", "#7a7870"),
+    "lite": ("Lite tier", MINT),
+    "max": ("Max tier", TEAL),
 }
 
 
@@ -83,17 +83,17 @@ def render_chart(res: dict) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Memory use: Zen compared with Zen Browser Lite">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1412"/><stop offset="1" stop-color="#070c0b"/>
+      <stop offset="0" stop-color="#262523"/><stop offset="1" stop-color="#171716"/>
     </linearGradient>
     <style>
-      .h {{ font: 700 19px {FONT_SANS}; fill: #f2fff8; }}
-      .sub {{ font: 400 13px {FONT_SANS}; fill: #7f948b; }}
-      .t {{ font: 800 26px {FONT_SANS}; fill: #f2fff8; letter-spacing: -0.5px; }}
-      .lbl {{ font: 500 14px {FONT_SANS}; fill: #c9d8d1; }}
-      .val {{ font: 600 13px {FONT_MONO}; fill: #06110d; opacity: 0; animation: fade .5s ease-out forwards; }}
+      .h {{ font: 700 19px {FONT_SANS}; fill: #f2f0e3; }}
+      .sub {{ font: 400 13px {FONT_SANS}; fill: #9a978b; }}
+      .t {{ font: 800 26px {FONT_SANS}; fill: #f2f0e3; letter-spacing: -0.5px; }}
+      .lbl {{ font: 500 14px {FONT_SANS}; fill: #d1cfc0; }}
+      .val {{ font: 600 13px {FONT_MONO}; fill: #1f1f1f; opacity: 0; animation: fade .5s ease-out forwards; }}
       .procs {{ font-weight: 400; }}
       .pct {{ font: 700 15px {FONT_MONO}; fill: {MINT}; opacity: 0; animation: fade .5s ease-out forwards; }}
-      .foot {{ font: 400 12px {FONT_MONO}; fill: #63766e; }}
+      .foot {{ font: 400 12px {FONT_MONO}; fill: #8a877c; }}
       .track {{ fill: #ffffff; fill-opacity: .045; }}
       .bar {{ transform-box: fill-box; transform-origin: left center; transform: scaleX(0);
               animation: grow 1.1s cubic-bezier(.2,.8,.2,1) forwards; }}
@@ -112,6 +112,15 @@ def render_chart(res: dict) -> str:
   <text x="40" y="{height - 24}" class="foot">{foot}</text>
 </svg>
 """
+
+
+def zen_logo(x: int, y: int, size: int) -> str:
+    """The official Zen logo, embedded unmodified (CC BY-NC-SA 4.0, see docs/assets/ZEN-LOGO-NOTICE.txt)."""
+    import re
+    svg = (REPO / "docs" / "assets" / "zen-logo.svg").read_text()
+    view_box = re.search(r'viewBox="([^"]+)"', svg).group(1)
+    inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", svg.strip(), flags=re.S)
+    return f'<svg x="{x}" y="{y}" width="{size}" height="{size}" viewBox="{view_box}">{inner}</svg>'
 
 
 def render_banner(res: dict) -> str:
@@ -142,7 +151,7 @@ def render_banner(res: dict) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Zen Browser Lite: Zen Browser using {pct}% less memory once background tabs are idle">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a1513"/><stop offset="1" stop-color="#060a09"/>
+      <stop offset="0" stop-color="#262523"/><stop offset="1" stop-color="#171716"/>
     </linearGradient>
     <radialGradient id="glow" cx=".5" cy=".5" r=".5">
       <stop offset="0" stop-color="{MINT}" stop-opacity=".38"/><stop offset="1" stop-color="{MINT}" stop-opacity="0"/>
@@ -151,7 +160,7 @@ def render_banner(res: dict) -> str:
       <stop offset="0" stop-color="{TEAL}" stop-opacity=".28"/><stop offset="1" stop-color="{TEAL}" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="ink" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d8ffec"/><stop offset="1" stop-color="{MINT}"/>
+      <stop offset="0" stop-color="#f2f0e3"/><stop offset=".6" stop-color="#f6d9cc"/><stop offset="1" stop-color="{MINT}"/>
     </linearGradient>
     <linearGradient id="meter" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="{TEAL}"/><stop offset="1" stop-color="{MINT}"/>
@@ -163,8 +172,8 @@ def render_banner(res: dict) -> str:
     <style>
       .orb {{ animation: drift 16s ease-in-out infinite alternate; }}
       .orb2 {{ animation: drift2 20s ease-in-out infinite alternate; }}
-      .ptxt {{ font: 500 14px {FONT_MONO}; fill: #e6fff3; }}
-      .zz {{ font: 500 11px {FONT_MONO}; fill: #6d827a; opacity: 0; }}
+      .ptxt {{ font: 500 14px {FONT_MONO}; fill: #f2f0e3; }}
+      .zz {{ font: 500 11px {FONT_MONO}; fill: #8a877c; opacity: 0; }}
       .pbg {{ fill: #fff; fill-opacity: .08; stroke: #fff; stroke-opacity: .16; }}
       .dot {{ fill: {MINT}; }}
       .active .pbg {{ fill: {MINT}; fill-opacity: .16; stroke: {MINT}; stroke-opacity: .6; }}
@@ -174,14 +183,14 @@ def render_banner(res: dict) -> str:
       .pill:not(.active) .zz {{ animation: zz 9s ease-in-out infinite; }}
 {sleep_rules}
       .bar {{ transform-box: fill-box; transform-origin: left center; animation: meter 9s ease-in-out infinite; }}
-      .num {{ font: 700 15px {FONT_MONO}; fill: #e6fff3; }}
-      .cap {{ font: 500 12px {FONT_MONO}; fill: #7f948b; letter-spacing: 1px; }}
-      .chip {{ font: 500 14px {FONT_MONO}; fill: #eafff4; }}
+      .num {{ font: 700 15px {FONT_MONO}; fill: #f2f0e3; }}
+      .cap {{ font: 500 12px {FONT_MONO}; fill: #9a978b; letter-spacing: 1px; }}
+      .chip {{ font: 500 14px {FONT_MONO}; fill: #f2f0e3; }}
       @keyframes drift {{ from {{ transform: translate(0,0); }} to {{ transform: translate(120px,24px); }} }}
       @keyframes drift2 {{ from {{ transform: translate(0,0); }} to {{ transform: translate(-140px,-16px); }} }}
       @keyframes pbg {{ 0%,8% {{ fill-opacity: .08; stroke-opacity: .16; }} 22%,85% {{ fill-opacity: .015; stroke-opacity: .07; }} 100% {{ fill-opacity: .08; stroke-opacity: .16; }} }}
-      @keyframes dot {{ 0%,8% {{ fill: {MINT}; }} 22%,85% {{ fill: #34423d; }} 100% {{ fill: {MINT}; }} }}
-      @keyframes ptxt {{ 0%,8% {{ fill: #e6fff3; }} 22%,85% {{ fill: #5d6f68; }} 100% {{ fill: #e6fff3; }} }}
+      @keyframes dot {{ 0%,8% {{ fill: {MINT}; }} 22%,85% {{ fill: #4a4843; }} 100% {{ fill: {MINT}; }} }}
+      @keyframes ptxt {{ 0%,8% {{ fill: #f2f0e3; }} 22%,85% {{ fill: #77746a; }} 100% {{ fill: #f2f0e3; }} }}
       @keyframes zz {{ 0%,8% {{ opacity: 0; }} 22%,85% {{ opacity: 1; }} 100% {{ opacity: 0; }} }}
       @keyframes meter {{ 0%,12% {{ transform: scaleX(1); }} 55%,85% {{ transform: scaleX({ratio:.3f}); }} 100% {{ transform: scaleX(1); }} }}
       @media (prefers-reduced-motion: reduce) {{
@@ -197,9 +206,10 @@ def render_banner(res: dict) -> str:
   </g>
   <rect x=".5" y=".5" width="1199" height="319" rx="23.5" fill="none" stroke="#fff" stroke-opacity=".13"/>
 
-  <text class="cap" x="73" y="92">UNOFFICIAL · RUNS THE OFFICIAL ZEN BUILD</text>
+  {zen_logo(72, 46, 46)}
+  <text class="cap" x="132" y="75">UNOFFICIAL · RUNS THE OFFICIAL ZEN BUILD</text>
   <text x="66" y="178" font-family="{FONT_SANS}" font-size="72" font-weight="800" letter-spacing="-2.5" fill="url(#ink)">Zen Browser Lite</text>
-  <text x="73" y="222" font-family="{FONT_SANS}" font-size="22" fill="#c4d4cc">The same Zen, on a memory diet</text>
+  <text x="73" y="222" font-family="{FONT_SANS}" font-size="22" fill="#d1cfc0">The same Zen, on a memory diet</text>
   <g transform="translate(73 260)">
     <rect width="214" height="32" rx="16" fill="{MINT}" fill-opacity=".16" stroke="{MINT}" stroke-opacity=".55"/>
     <text class="chip" x="107" y="21" text-anchor="middle">-{pct}% RAM when idle</text>
