@@ -38,7 +38,8 @@ ok "re-running updates in place and switches tier"
 
 mkdir -p "$work/my profile" && touch "$work/my profile/prefs.js"
 run --profile "$work/my profile" || { cat "$work/out.log"; fail "--profile install failed"; }
-grep -qF -- "-profile $(printf '%q' "$work/my profile")" "$HOME/.local/bin/zen-lite" || fail "launcher lacks -profile"
+prof_real="$(cd -- "$work/my profile" && pwd -P)"   # /var is a symlink to /private/var on macOS
+grep -qF -- "-profile $(printf '%q' "$prof_real")" "$HOME/.local/bin/zen-lite" || { cat "$HOME/.local/bin/zen-lite"; fail "launcher lacks -profile"; }
 mkdir -p "$work/empty"
 if run --profile "$work/empty"; then fail "accepted a non-profile folder"; fi
 ok "--profile is quoted into the launcher; non-profile folders are refused"

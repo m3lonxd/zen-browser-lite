@@ -180,7 +180,9 @@ mnt="$work/mnt"
 mkdir -p "$mnt"
 hdiutil attach "$dmg" -nobrowse -readonly -noautoopen -mountpoint "$mnt" -quiet || die "could not open the disk image."
 zen_app="$(find "$mnt" -maxdepth 2 -name "Zen*.app" -type d | head -n 1)"
-[ -n "$zen_app" ] && [ -x "$zen_app/Contents/MacOS/zen" ] || die "the disk image does not contain Zen.app."
+if [ -z "$zen_app" ] || [ ! -x "$zen_app/Contents/MacOS/zen" ]; then
+  die "the disk image does not contain Zen.app."
+fi
 staged="$work/${APP_NAME}.app"
 ditto "$zen_app" "$staged"
 hdiutil detach "$mnt" -quiet >/dev/null 2>&1 || true

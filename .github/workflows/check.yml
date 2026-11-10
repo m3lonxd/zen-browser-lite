@@ -64,8 +64,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $a = gh api repos/zen-browser/desktop/releases/latest --jq '.assets[] | select(.name == "zen.installer.exe") | .browser_download_url + " " + .digest'
-          $url, $digest = $a -split " "
+          $release = Invoke-RestMethod -Uri https://api.github.com/repos/zen-browser/desktop/releases/latest -Headers @{ Authorization = "Bearer $env:GH_TOKEN"; "User-Agent" = "zen-browser-lite-ci" }
+          $a = $release.assets | Where-Object { $_.name -eq "zen.installer.exe" }
+          $url = $a.browser_download_url; $digest = $a.digest
+          $ProgressPreference = "SilentlyContinue"
           Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile zen.installer.exe
           $h = (Get-FileHash -Algorithm SHA256 zen.installer.exe).Hash.ToLowerInvariant()
           if ("sha256:$h" -ne $digest) { throw "checksum mismatch" }
