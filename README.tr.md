@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/m3lonxd/zen-browser-lite/actions/workflows/check.yml"><img src="https://img.shields.io/github/actions/workflow/status/m3lonxd/zen-browser-lite/check.yml?branch=main&style=flat-square&label=testler%20%2F%20son%20Zen" alt="En yeni Zen sürümüne karşı testler"></a>
   <a href="https://zenbrowserlite.vercel.app"><img src="https://img.shields.io/badge/site-zenbrowserlite.vercel.app-ff453a?style=flat-square" alt="Site"></a>
-  <img src="https://img.shields.io/badge/platform-Linux-6287f5?style=flat-square" alt="Platform: Linux">
+  <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS-6287f5?style=flat-square" alt="Platform: Linux, Windows, macOS">
   <a href="./LICENSE"><img src="https://img.shields.io/badge/lisans-MPL--2.0-7a7870?style=flat-square" alt="Lisans: MPL-2.0"></a>
 </p>
 
@@ -21,21 +21,43 @@ Testte ikisinde de aynı 7 site açıldı. Arka plan sekmeleri bir süre boşta 
 
 ## Kurulum
 
+### Linux
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.sh | bash
 ```
 
-`~/.local/opt/zen-lite` klasörüne kurulur. `zen-lite` komutunu ve Zen'in kendi ikonunu kullanan bir menü girdisi ekler. Root yetkisi gerekmez. Gerekenler: `curl`, `tar`, `xz`, `sha256sum`, `python3`.
+`~/.local/opt/zen-lite` klasörüne kurulur; `zen-lite` komutu ve Zen'in kendi ikonunu kullanan bir menü girdisi eklenir. Root gerekmez. Gerekenler: `curl`, `tar`, `xz`, `sha256sum`, `python3`.
 
-| Seçenek | Ne yapar |
-| --- | --- |
-| `--tier lite` | Varsayılan. Güvenliği zayıflatmadan bellek kazandırır. |
-| `--tier max` | Site izolasyonunu kapatır. Aşağıdaki uyarıyı okuyun. |
-| `--profile KLASÖR` | Mevcut bir profille açar, örneğin `~/.zen` içindeki Zen profiliniz. Önce Zen'i kapatın: iki tarayıcı aynı profili aynı anda açamaz. |
-| `--set-default` | Varsayılan tarayıcı yapar, diğer uygulamalardaki linkler bunda açılır. |
-| `--uninstall` | Kaldırır. Profillere dokunmaz. |
+### Windows 10 ve 11
 
-Güncellemek için kurulum betiğini yeniden çalıştırmanız yeterli. Zen'in kendi güncelleyicisi de çalışmaya devam eder.
+PowerShell'de:
+
+```powershell
+irm https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.ps1 | iex
+```
+
+`%LOCALAPPDATA%\Programs\Zen Browser Lite` klasörüne kurulur ve Başlat menüsüne kısayol eklenir. Yönetici yetkisi gerekmez. Resmi Zen kurulum dosyası çalıştırılmaz, sadece içi açılır: 7-Zip varsa onunla, yoksa Windows'taki `tar.exe` ile, o da olmazsa 7-Zip'in resmi sürümlerinden checksum'ı sabitlenmiş `7zr.exe` ile. Seçenek vermek için: `& ([scriptblock]::Create((irm https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.ps1))) -Tier max -RegisterBrowser`.
+
+### macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install-macos.sh | bash
+```
+
+Resmi disk görüntüsündeki `Zen.app`, `~/Applications/Zen Browser Lite.app` olarak kopyalanır; `~/.local/bin` içine `zen-lite` komutu eklenir. Apple silicon ve Intel. Bellek katmanı uygulamanın içine eklendiği için Zen'in imzası bozulur; kurulum betiği kopyayı senin Mac'inde yerel (ad hoc) olarak yeniden imzalar. Kurulu orijinal Zen'e dokunulmaz.
+
+### Seçenekler
+
+| Linux, macOS | Windows | Ne yapar |
+| --- | --- | --- |
+| `--tier lite` | `-Tier lite` | Varsayılan. Güvenliği zayıflatmadan bellek kazandırır. |
+| `--tier max` | `-Tier max` | Site izolasyonunu kapatır. Aşağıdaki uyarıyı oku. |
+| `--profile KLASÖR` | `-ProfileDir KLASÖR` | Mevcut bir profille açar, örneğin şu anki Zen profilin. Önce Zen'i kapat. |
+| `--set-default` (Linux) | `-RegisterBrowser` | Linux: varsayılan tarayıcı yapar. Windows: tarayıcı olarak kaydeder ve Varsayılan uygulamalar sayfasını açar, orada seçersin; Windows bunu programların sessizce yapmasına izin vermez. macOS'ta Sistem Ayarları > Masaüstü ve Dock'tan seç. |
+| `--uninstall` | `-Uninstall` | Kaldırır. Profillere dokunmaz. |
+
+Zen profilleri: Linux'ta `~/.zen`, Windows'ta `%APPDATA%\zen\Profiles`, macOS'ta `~/Library/Application Support/zen/Profiles`. Güncellemek için kurulum betiğini yeniden çalıştırman yeterli.
 
 ## Ne değişiyor
 

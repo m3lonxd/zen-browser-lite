@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/m3lonxd/zen-browser-lite/actions/workflows/check.yml"><img src="https://img.shields.io/github/actions/workflow/status/m3lonxd/zen-browser-lite/check.yml?branch=main&style=flat-square&label=tests%20vs%20latest%20Zen" alt="Tests against the latest Zen release"></a>
   <a href="https://zenbrowserlite.vercel.app"><img src="https://img.shields.io/badge/site-zenbrowserlite.vercel.app-ff453a?style=flat-square" alt="Site"></a>
-  <img src="https://img.shields.io/badge/platform-Linux-6287f5?style=flat-square" alt="Platform: Linux">
+  <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS-6287f5?style=flat-square" alt="Platform: Linux, Windows, macOS">
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MPL--2.0-7a7870?style=flat-square" alt="License: MPL-2.0"></a>
   <a href="https://github.com/zen-browser/desktop"><img src="https://img.shields.io/badge/runs-official%20Zen%20builds-f76f53?style=flat-square" alt="Runs official Zen builds"></a>
 </p>
@@ -22,27 +22,47 @@ The test opened the same 7 websites in both. Once the background tabs had been i
 
 ## Install
 
+### Linux
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.sh | bash
 ```
 
-Prefer to read it first? `curl -fsSLO https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.sh`, look through it, then run `bash install.sh`.
+Installs into `~/.local/opt/zen-lite`, adds a `zen-lite` command and a menu entry with Zen's own icon. Needs `curl`, `tar`, `xz`, `sha256sum` and `python3`. No root rights.
 
-Zen Browser Lite installs into `~/.local/opt/zen-lite`, adds a `zen-lite` command and a menu entry that uses Zen's own icon. It needs `curl`, `tar`, `xz`, `sha256sum` and `python3`, which almost every Linux desktop already has. No root rights.
+### Windows 10 and 11
 
-| Option | What it does |
-| --- | --- |
-| `--tier lite` | Default. Saves memory without weakening security. |
-| `--tier max` | Saves the most. Turns off site isolation, see [lite or max](#lite-or-max). |
-| `--profile DIR` | Start with an existing profile, for example your current Zen profile in `~/.zen`. |
-| `--set-default` | Make Zen Browser Lite the default browser, so links from other apps open in it. |
-| `--zen-version TAG` | Install a specific Zen release instead of the latest. |
-| `--uninstall` | Remove Zen Browser Lite. Profiles are kept. |
+In PowerShell:
 
-Run the installer again at any time to update Zen and Zen Browser Lite; settings and profiles stay. Zen's own updater also keeps working, and Zen Browser Lite's files survive its updates.
+```powershell
+irm https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.ps1 | iex
+```
+
+Installs into `%LOCALAPPDATA%\Programs\Zen Browser Lite` and adds a Start menu shortcut. No administrator rights. The official Zen installer is unpacked, never run: with 7-Zip if you have it, otherwise with the `tar.exe` built into Windows, otherwise with a pinned, checksum-verified `7zr.exe` from the official 7-Zip releases. To pass options, use `& ([scriptblock]::Create((irm https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.ps1))) -Tier max -RegisterBrowser`.
+
+### macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install-macos.sh | bash
+```
+
+Copies `Zen.app` from the official disk image to `~/Applications/Zen Browser Lite.app` and adds a `zen-lite` command in `~/.local/bin`. Universal: Apple silicon and Intel. Adding the memory layer inside the app breaks Zen's code signature, so the installer re-signs the copy ad hoc on your Mac. Your original Zen, if installed, is not touched.
+
+### Options
+
+| Linux, macOS | Windows | What it does |
+| --- | --- | --- |
+| `--tier lite` | `-Tier lite` | Default. Saves memory without weakening security. |
+| `--tier max` | `-Tier max` | Turns off site isolation, see [lite or max](#lite-or-max). |
+| `--profile DIR` | `-ProfileDir DIR` | Start with an existing profile, for example your current Zen profile. |
+| `--set-default` (Linux) | `-RegisterBrowser` | Linux: make it the default browser. Windows: register it as a browser and open Default apps, where you pick it; Windows does not let a program do that silently. On macOS choose it in System Settings > Desktop & Dock. |
+| `--zen-version TAG` | `-ZenVersion TAG` | Install a specific Zen release instead of the latest. |
+| `--uninstall` | `-Uninstall` | Remove Zen Browser Lite. Profiles are kept. |
+
+Run the installer again at any time to update Zen and Zen Browser Lite; settings and profiles stay.
 
 > [!NOTE]
-> Using `--profile` with the profile your normal Zen uses? Close Zen first. Two browsers cannot have the same profile open at once.
+> Using `--profile` with the profile your normal Zen uses? Close Zen first. Two browsers cannot have the same profile open at once. Zen keeps profiles in `~/.zen` on Linux, `%APPDATA%\zen\Profiles` on Windows and `~/Library/Application Support/zen/Profiles` on macOS.
 
 ## Where the memory goes
 
@@ -112,19 +132,15 @@ Your numbers will differ with your sites, extensions and hardware. The direction
 
 | Test | What it proves |
 | --- | --- |
-| [`tests/test_unloader.sh`](./tests/test_unloader.sh) | Starts Zen Browser Lite with five local pages. Checks that idle tabs are unloaded and that the selected, pinned and unsaved tabs are kept. Checks that the tier's prefs are live in the running browser. |
-| [`tests/test_install.sh`](./tests/test_install.sh) | Install, in-place update, tier switch, `--profile`, refusing folders Zen Browser Lite did not create, uninstall that keeps profiles. |
+| [`tests/e2e_unloader.py`](./tests/e2e_unloader.py) | Starts the installed browser with five local pages on Linux, Windows and macOS. Checks that idle tabs are unloaded and that the selected, pinned and unsaved tabs are kept, and that the tier's prefs are live. |
+| [`tests/test_install.sh`](./tests/test_install.sh), [`test_install.ps1`](./tests/test_install.ps1), [`test_install_macos.sh`](./tests/test_install_macos.sh) | Install, in-place update, tier switch, profile option, refusing folders Zen Browser Lite did not create, uninstall that keeps profiles. On Windows each unpacking method (7-Zip, `tar.exe`, `7zr.exe`) is tested, plus browser registration. |
 | [`tools/check_prefs.py`](./tools/check_prefs.py) | Every pref Zen Browser Lite sets exists in the Zen build. |
 
-CI runs all three on every change and every Monday against the newest Zen release.
+CI runs them on Ubuntu, Windows and macOS for every change and every Monday against the newest Zen release.
 
 ## Uninstall
 
-```bash
-bash install.sh --uninstall
-```
-
-This removes `~/.local/opt/zen-lite`, the `zen-lite` command, and the menu entry. Browser profiles in `~/.zen` are left alone.
+Run the installer for your system with `--uninstall` (Windows: `-Uninstall`). It removes the app, the `zen-lite` command or Start menu shortcut, the menu entry and, on Windows, the browser registration. Browser profiles are left alone.
 
 ## Credits
 
