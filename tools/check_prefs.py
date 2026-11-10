@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Check that every pref NexLite sets is known to a Zen Browser build.
+"""Check that every pref Zen Browser Lite sets is known to a Zen Browser build.
 
 Firefox silently ignores prefs it does not know, so a renamed or removed pref would
 quietly stop saving memory. This script collects every pref name the build mentions
 (compiled static prefs in libxul, default pref files, and the JavaScript inside both
-omni.ja archives) and fails if a NexLite pref is not among them.
+omni.ja archives) and fails if a Zen Browser Lite pref is not among them.
 
 Usage: check_prefs.py ZEN_INSTALL_DIR PREFS_FILE [PREFS_FILE ...]
 """
@@ -18,7 +18,7 @@ import zlib
 from pathlib import Path
 
 PREF_CALL = re.compile(r'^\s*pref\(\s*"([^"]+)"', re.MULTILINE)
-OWN_PREFIX = "nexlite."
+OWN_PREFIX = "zenlite."
 # Prefs that are read under a computed name and therefore never appear as one string.
 DYNAMIC_ALLOWED: set[str] = set()
 

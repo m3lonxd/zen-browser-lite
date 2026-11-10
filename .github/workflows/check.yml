@@ -39,7 +39,7 @@ jobs:
           echo "${digest#sha256:}  zen.tar.xz" | sha256sum -c -
           mkdir zen-unpacked && tar -xJf zen.tar.xz -C zen-unpacked
 
-      - name: Every NexLite pref exists in this Zen build
+      - name: Every Zen Browser Lite pref exists in this Zen build
         run: python3 tools/check_prefs.py zen-unpacked/zen src/prefs/lite.js src/prefs/max.js
 
       - name: Installer tests

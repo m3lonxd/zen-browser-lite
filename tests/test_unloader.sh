@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# End-to-end test: install NexLite from a Zen archive into a throwaway HOME, start it
+# End-to-end test: install Zen Browser Lite from a Zen archive into a throwaway HOME, start it
 # under Xvfb with five local pages, and check that the timed unloader unloads idle
 # background tabs while leaving the selected, pinned and "unsaved changes" tabs alone.
 # It also checks that the tier's prefs are active in the running browser.
@@ -12,7 +12,7 @@ set -euo pipefail
 tarball="$(realpath -- "${1:?usage: test_unloader.sh ZEN_TARBALL [lite|max]}")"
 tier="${2:-lite}"
 repo="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-work="$(mktemp -d "${TMPDIR:-/tmp}/nexlite-test.XXXXXXXX")"
+work="$(mktemp -d "${TMPDIR:-/tmp}/zen-lite-test.XXXXXXXX")"
 server_pid=""
 cleanup() {
   [[ -n "$server_pid" ]] && kill "$server_pid" 2>/dev/null || true
@@ -26,8 +26,8 @@ export HOME="$work/home"
 export XDG_DATA_HOME="$HOME/.local/share"
 mkdir -p "$HOME"
 bash "$repo/install.sh" --zen-tarball "$tarball" --tier "$tier" --no-desktop >/dev/null
-prefix="$HOME/.local/opt/nexlite"
-[[ -f "$prefix/nexlite.cfg" && -f "$prefix/browser/defaults/preferences/nexlite-prefs.js" ]] || fail "install did not place NexLite files"
+prefix="$HOME/.local/opt/zen-lite"
+[[ -f "$prefix/zen-lite.cfg" && -f "$prefix/browser/defaults/preferences/zen-lite-prefs.js" ]] || fail "install did not place Zen Browser Lite files"
 
 # --- Local test pages ---------------------------------------------------------------
 site="$work/site"
@@ -48,13 +48,13 @@ base="http://127.0.0.1:$port"
 
 # --- Test fixture appended to the installed cfg (the repo copy is untouched) -------------
 report="$work/report.json"
-cat >>"$prefix/nexlite.cfg" <<'EOF'
+cat >>"$prefix/zen-lite.cfg" <<'EOF'
 
 // ---- test fixture (added by tests/test_unloader.sh) ----
-(function nexliteTestFixture() {
-  const reportPath = Services.env.get("NEXLITE_TEST_REPORT");
+(function zenLiteTestFixture() {
+  const reportPath = Services.env.get("ZENLITE_TEST_REPORT");
   const watched = ["dom.ipc.processCount.webIsolated", "dom.ipc.processPrelaunch.enabled",
-    "fission.autostart", "nexlite.unloader.after-seconds", "browser.tabs.unloadOnLowMemory"];
+    "fission.autostart", "zenlite.unloader.after-seconds", "browser.tabs.unloadOnLowMemory"];
   Services.obs.addObserver(function onWin(win) {
     Services.obs.removeObserver(onWin, "browser-delayed-startup-finished");
     win.setTimeout(() => {
@@ -88,8 +88,8 @@ EOF
 profile="$work/profile"
 mkdir -p "$profile"
 cat >"$profile/user.js" <<'EOF'
-user_pref("nexlite.unloader.after-seconds", 10);
-user_pref("nexlite.unloader.check-seconds", 5);
+user_pref("zenlite.unloader.after-seconds", 10);
+user_pref("zenlite.unloader.check-seconds", 5);
 user_pref("browser.shell.checkDefaultBrowser", false);
 user_pref("browser.startup.homepage_override.mstone", "ignore");
 user_pref("zen.welcome-screen.seen", true);
@@ -98,7 +98,7 @@ user_pref("zen.welcome-screen.seen", true);
 user_pref("dom.require_user_interaction_for_beforeunload", false);
 EOF
 
-export NEXLITE_TEST_REPORT="$report"
+export ZENLITE_TEST_REPORT="$report"
 export MOZ_CRASHREPORTER_DISABLE=1
 timeout 90 xvfb-run -a -s "-screen 0 1280x800x24" \
   "$prefix/zen" --no-remote -profile "$profile" \
@@ -127,7 +127,7 @@ for page, loaded in want.items():
         problems.append(f"{page}: loaded={t['loaded']}, expected {loaded}")
 p = r["prefs"]
 expect = {"dom.ipc.processCount.webIsolated": 1, "dom.ipc.processPrelaunch.enabled": False,
-          "browser.tabs.unloadOnLowMemory": True, "nexlite.unloader.after-seconds": 10,
+          "browser.tabs.unloadOnLowMemory": True, "zenlite.unloader.after-seconds": 10,
           "fission.autostart": tier == "lite"}
 for k, v in expect.items():
     if p.get(k) != v:

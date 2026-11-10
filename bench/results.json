@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-10",
+  "zen_version": "1.24.1b",
+  "arch": "x86_64",
+  "method": {
+    "sites": [
+      "https://en.wikipedia.org/wiki/Web_browser",
+      "https://en.wikipedia.org/wiki/Firefox",
+      "https://github.com/zen-browser/desktop",
+      "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "https://www.bbc.com/news",
+      "https://www.youtube.com/@Mozilla",
+      "https://news.ycombinator.com/"
+    ],
+    "loaded_at_s": 90,
+    "idle_at_s": 240,
+    "unloader_after_s_in_bench": 120,
+    "metric": "sum of PSS + SwapPss over all browser processes, MB",
+    "rounds": 3,
+    "aggregate": "median"
+  },
+  "summary": {
+    "stock": {
+      "loaded_mb": 1346.2,
+      "idle_mb": 1230.3,
+      "loaded_processes": 20,
+      "idle_processes": 19
+    },
+    "lite": {
+      "loaded_mb": 1177.2,
+      "idle_mb": 496.2,
+      "loaded_processes": 15,
+      "idle_processes": 8
+    },
+    "max": {
+      "loaded_mb": 1071.1,
+      "idle_mb": 552.8,
+      "loaded_processes": 10,
+      "idle_processes": 7
+    }
+  },
+  "runs": {
+    "stock": [
+      {
+        "loaded_mb": 1346.2,
+        "loaded_processes": 19,
+        "idle_mb": 1252.4,
+        "idle_processes": 19
+      },
+      {
+        "loaded_mb": 1369.2,
+        "loaded_processes": 20,
+        "idle_mb": 1230.3,
+        "idle_processes": 19
+      },
+      {
+        "loaded_mb": 1280.1,
+        "loaded_processes": 20,
+        "idle_mb": 1144.9,
+        "idle_processes": 20
+      }
+    ],
+    "lite": [
+      {
+        "loaded_mb": 1056.2,
+        "loaded_processes": 15,
+        "idle_mb": 496.2,
+        "idle_processes": 8
+      },
+      {
+        "loaded_mb": 1214.8,
+        "loaded_processes": 15,
+        "idle_mb": 539.3,
+        "idle_processes": 8
+      },
+      {
+        "loaded_mb": 1177.2,
+        "loaded_processes": 15,
+        "idle_mb": 482.3,
+        "idle_processes": 8
+      }
+    ],
+    "max": [
+      {
+        "loaded_mb": 1087.8,
+        "loaded_processes": 10,
+        "idle_mb": 626.8,
+        "idle_processes": 8
+      },
+      {
+        "loaded_mb": 1071.1,
+        "loaded_processes": 10,
+        "idle_mb": 552.8,
+        "idle_processes": 7
+      },
+      {
+        "loaded_mb": 1019.7,
+        "loaded_processes": 10,
+        "idle_mb": 484.6,
+        "idle_processes": 7
+      }
+    ]
+  }
+}

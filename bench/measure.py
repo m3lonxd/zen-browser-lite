@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Measure Zen Browser memory with and without NexLite.
+"""Measure Zen Browser memory with and without Zen Browser Lite.
 
-For every variant ("stock" Zen, NexLite "lite", NexLite "max") and every round, this
+For every variant ("stock" Zen, Zen Browser Lite "lite", Zen Browser Lite "max") and every round, this
 script unpacks the same official Zen archive into a throwaway folder, starts it under
 Xvfb with a fresh profile and the same set of real websites, and samples memory twice:
 
@@ -12,7 +12,7 @@ Memory is the sum of PSS + SwapPss over every process started from that install
 folder. PSS splits shared pages fairly between processes, so the sum does not count
 shared libraries twice, and SwapPss keeps swapped-out memory in the total.
 
-To keep a run at four minutes the NexLite unloader timer is set to 120 s here instead
+To keep a run at four minutes the Zen Browser Lite unloader timer is set to 120 s here instead
 of the shipped 600 s (lite) or 300 s (max); the "idle" number therefore shows what
 happens once the timer has passed, not after exactly four minutes of real use.
 
@@ -59,9 +59,9 @@ user_pref("zen.welcome-screen.seen", true);
 user_pref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
 user_pref("media.autoplay.default", 5);
 """
-NEXLITE_USER_JS = f"""\
-user_pref("nexlite.unloader.after-seconds", {BENCH_UNLOAD_AFTER});
-user_pref("nexlite.unloader.check-seconds", 15);
+ZENLITE_USER_JS = f"""\
+user_pref("zenlite.unloader.after-seconds", {BENCH_UNLOAD_AFTER});
+user_pref("zenlite.unloader.check-seconds", 15);
 """
 
 
@@ -78,7 +78,7 @@ def install_variant(variant: str, tarball: Path, root: Path) -> Path:
         ["bash", str(REPO / "install.sh"), "--zen-tarball", str(tarball), "--tier", variant, "--no-desktop"],
         env=env, check=True, stdout=subprocess.DEVNULL,
     )
-    return home / ".local/opt/nexlite"
+    return home / ".local/opt/zen-lite"
 
 
 def processes_under(prefix: Path) -> list[int]:
@@ -111,12 +111,12 @@ def memory_mb(pids: list[int]) -> float:
 
 
 def run_once(variant: str, tarball: Path) -> dict:
-    with tempfile.TemporaryDirectory(prefix=f"nexlite-bench-{variant}-") as tmp:
+    with tempfile.TemporaryDirectory(prefix=f"zen-lite-bench-{variant}-") as tmp:
         root = Path(tmp)
         prefix = install_variant(variant, tarball, root)
         profile = root / "profile"
         profile.mkdir()
-        (profile / "user.js").write_text(USER_JS + (NEXLITE_USER_JS if variant != "stock" else ""))
+        (profile / "user.js").write_text(USER_JS + (ZENLITE_USER_JS if variant != "stock" else ""))
         cmd = [
             "xvfb-run", "-a", "-s", "-screen 0 1600x900x24",
             str(prefix / "zen"), "--no-remote", "-profile", str(profile), *SITES,

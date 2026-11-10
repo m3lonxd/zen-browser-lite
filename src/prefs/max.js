@@ -1,4 +1,4 @@
-// NexLite "max" profile: default prefs for Zen Browser.
+// Zen Browser Lite "max" profile: default prefs for Zen Browser.
 //
 // Everything in "lite", pushed further, plus one trade-off you should understand
 // before choosing it:
@@ -10,7 +10,7 @@
 //   in the same process. Do not use "max" on a machine where you handle sensitive
 //   accounts and visit untrusted sites in the same browser.
 //
-// Installed as browser/defaults/preferences/nexlite-prefs.js in the Zen folder; values
+// Installed as browser/defaults/preferences/zen-lite-prefs.js in the Zen folder; values
 // changed in about:config still win.
 
 // --- Content processes --------------------------------------------------------------
@@ -22,10 +22,10 @@ pref("dom.ipc.processPrelaunch.enabled", false);
 
 // --- Unloading idle tabs ------------------------------------------------------------
 // Unload a background tab after 5 minutes unused.
-pref("nexlite.unloader.enabled", true);
-pref("nexlite.unloader.after-seconds", 300);
-pref("nexlite.unloader.check-seconds", 30);
-pref("nexlite.unloader.include-pinned", false);
+pref("zenlite.unloader.enabled", true);
+pref("zenlite.unloader.after-seconds", 300);
+pref("zenlite.unloader.check-seconds", 30);
+pref("zenlite.unloader.include-pinned", false);
 pref("browser.tabs.unloadOnLowMemory", true);
 pref("browser.low_commit_space_threshold_percent", 25);
 pref("browser.tabs.min_inactive_duration_before_unload", 120000);

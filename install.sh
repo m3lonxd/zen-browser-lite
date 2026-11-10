@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# NexLite installer for Linux.
+# Zen Browser Lite installer for Linux.
 #
 # Downloads the official Zen Browser release from github.com/zen-browser/desktop,
 # verifies its SHA-256 against the digest GitHub publishes for the release asset,
-# installs it to its own folder and adds NexLite's memory settings and tab unloader.
-# Zen itself is not modified or rebuilt; NexLite only adds three files next to it.
+# installs it to its own folder and adds Zen Browser Lite's memory settings and tab unloader.
+# Zen itself is not modified or rebuilt; Zen Browser Lite only adds three files next to it.
 #
-#   curl -fsSL https://raw.githubusercontent.com/m3lonxd/nexlite/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/m3lonxd/zen-browser-lite/main/install.sh | bash
 #   bash install.sh --tier max
 #   bash install.sh --uninstall
 #
@@ -14,17 +14,16 @@
 
 set -euo pipefail
 
-NEXLITE_VERSION="0.1.0"
-NEXLITE_REPO="m3lonxd/nexlite"
-NEXLITE_REF="${NEXLITE_REF:-main}"
-MARKER_NAME=".nexlite-install"
-LAUNCHER_TAG="# nexlite-launcher"
+ZENLITE_VERSION="0.1.0"
+ZENLITE_REPO="m3lonxd/zen-browser-lite"
+ZENLITE_REF="${ZENLITE_REF:-main}"
+MARKER_NAME=".zen-lite-install"
+LAUNCHER_TAG="# zen-lite-launcher"
 
 tier="lite"
-prefix="${HOME}/.local/opt/nexlite"
+prefix="${HOME}/.local/opt/zen-lite"
 bin_dir="${HOME}/.local/bin"
 apps_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/applications"
-icons_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/icons/hicolor/scalable/apps"
 zen_tarball=""
 zen_version="latest"
 profile=""
@@ -38,24 +37,24 @@ die() { printf '\033[1;31merror:\033[0m %s\n' "$*" >&2; exit 1; }
 
 usage() {
   cat <<EOF
-NexLite ${NEXLITE_VERSION}: Zen Browser with lower memory use.
+Zen Browser Lite ${ZENLITE_VERSION}: unofficial low-memory setup of the official Zen Browser.
 
 Usage: install.sh [options]
 
   --tier lite|max        Memory profile (default: lite).
                          lite keeps site isolation; max turns it off to save more
                          memory (read the README before choosing max).
-  --prefix DIR           Install folder (default: ~/.local/opt/nexlite).
+  --prefix DIR           Install folder (default: ~/.local/opt/zen-lite).
   --zen-version TAG      Zen release to install, e.g. 1.24.1b (default: latest).
   --zen-tarball FILE     Use a local zen.linux-*.tar.xz instead of downloading.
   --profile DIR          Always start with this existing profile folder,
                          e.g. a profile from your current Zen in ~/.zen.
   --no-desktop           Do not add a menu entry and icon.
-  --set-default          Make NexLite the default web browser.
-  --uninstall            Remove NexLite (your profiles are kept).
+  --set-default          Make Zen Browser Lite the default web browser.
+  --uninstall            Remove Zen Browser Lite (your profiles are kept).
   -h, --help             Show this help.
 
-Re-running the installer updates Zen and NexLite in place and keeps your settings.
+Re-running the installer updates Zen and Zen Browser Lite in place and keeps your settings.
 EOF
 }
 
@@ -94,24 +93,24 @@ is_running() {
 
 uninstall() {
   if is_running; then
-    die "NexLite is running. Close it first."
+    die "Zen Browser Lite is running. Close it first."
   fi
   if [[ -d "$prefix" ]]; then
-    [[ -f "$prefix/$MARKER_NAME" ]] || die "$prefix was not installed by NexLite; not removing it."
+    [[ -f "$prefix/$MARKER_NAME" ]] || die "$prefix was not installed by Zen Browser Lite; not removing it."
     rm -rf -- "$prefix"
     say "Removed $prefix"
   fi
-  if [[ -f "$bin_dir/nexlite" ]] && grep -qF "$LAUNCHER_TAG" "$bin_dir/nexlite"; then
-    rm -f -- "$bin_dir/nexlite"
-    say "Removed $bin_dir/nexlite"
+  if [[ -f "$bin_dir/zen-lite" ]] && grep -qF "$LAUNCHER_TAG" "$bin_dir/zen-lite"; then
+    rm -f -- "$bin_dir/zen-lite"
+    say "Removed $bin_dir/zen-lite"
   fi
-  rm -f -- "$apps_dir/nexlite.desktop" "$icons_dir/nexlite.svg"
+  rm -f -- "$apps_dir/zen-lite.desktop"
   command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$apps_dir" >/dev/null 2>&1 || true
   if command -v xdg-settings >/dev/null 2>&1 &&
-    [[ "$(xdg-settings get default-web-browser 2>/dev/null || true)" == "nexlite.desktop" ]]; then
-    warn "NexLite was your default browser. Pick a new one in your system settings."
+    [[ "$(xdg-settings get default-web-browser 2>/dev/null || true)" == "zen-lite.desktop" ]]; then
+    warn "Zen Browser Lite was your default browser. Pick a new one in your system settings."
   fi
-  say "NexLite removed. Browser profiles in ~/.zen were not touched."
+  say "Zen Browser Lite removed. Browser profiles in ~/.zen were not touched."
 }
 
 if [[ "$action" == "uninstall" ]]; then
@@ -135,35 +134,35 @@ case "$(uname -m)" in
 esac
 
 if is_running; then
-  die "NexLite is running. Close it, then run the installer again."
+  die "Zen Browser Lite is running. Close it, then run the installer again."
 fi
 if [[ -e "$prefix" && ! -f "$prefix/$MARKER_NAME" ]]; then
-  die "$prefix already exists and was not created by NexLite. Choose another --prefix."
+  die "$prefix already exists and was not created by Zen Browser Lite. Choose another --prefix."
 fi
 
-work="$(mktemp -d "${TMPDIR:-/tmp}/nexlite.XXXXXXXX")"
+work="$(mktemp -d "${TMPDIR:-/tmp}/zen-lite.XXXXXXXX")"
 cleanup() { rm -rf -- "$work"; }
 trap cleanup EXIT
 
-# --- NexLite files: from this checkout, or from GitHub when piped through curl. ---------
+# --- Zen Browser Lite files: from this checkout, or from GitHub when piped through curl. ---------
 script_dir=""
 if [[ -n "${BASH_SOURCE[0]:-}" && -f "${BASH_SOURCE[0]}" ]]; then
   script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 fi
 src="$work/src"
 mkdir -p "$src/prefs"
-if [[ -n "$script_dir" && -f "$script_dir/src/nexlite.cfg" ]]; then
-  cp "$script_dir/src/nexlite.cfg" "$script_dir/src/autoconfig.js" "$script_dir/src/nexlite.svg" "$src/"
+if [[ -n "$script_dir" && -f "$script_dir/src/zen-lite.cfg" ]]; then
+  cp "$script_dir/src/zen-lite.cfg" "$script_dir/src/autoconfig.js" "$src/"
   cp "$script_dir/src/prefs/$tier.js" "$src/prefs/"
 else
   need curl
-  base="https://raw.githubusercontent.com/${NEXLITE_REPO}/${NEXLITE_REF}/src"
-  say "Fetching NexLite files ($NEXLITE_REF)"
-  for f in nexlite.cfg autoconfig.js nexlite.svg "prefs/$tier.js"; do
+  base="https://raw.githubusercontent.com/${ZENLITE_REPO}/${ZENLITE_REF}/src"
+  say "Fetching Zen Browser Lite files ($ZENLITE_REF)"
+  for f in zen-lite.cfg autoconfig.js "prefs/$tier.js"; do
     curl -fsSL --retry 3 -o "$src/$f" "$base/$f" || die "could not download $base/$f"
   done
 fi
-grep -q "nexliteUnloader" "$src/nexlite.cfg" || die "downloaded nexlite.cfg looks wrong."
+grep -q "zenLiteUnloader" "$src/zen-lite.cfg" || die "downloaded zen-lite.cfg looks wrong."
 
 # --- Zen release --------------------------------------------------------------------
 asset="zen.linux-${arch}.tar.xz"
@@ -215,13 +214,13 @@ staged="$work/unpack/zen"
 [[ -x "$staged/zen" && -f "$staged/application.ini" ]] || die "the archive does not contain a Zen build."
 zen_app_version="$(sed -n 's/^Version=//p' "$staged/application.ini" | head -n1)"
 
-# --- NexLite layer ------------------------------------------------------------------
+# --- Zen Browser Lite layer ------------------------------------------------------------------
 install -m 0644 "$src/autoconfig.js" "$staged/defaults/pref/autoconfig.js"
 mkdir -p "$staged/browser/defaults/preferences"
-install -m 0644 "$src/prefs/$tier.js" "$staged/browser/defaults/preferences/nexlite-prefs.js"
-install -m 0644 "$src/nexlite.cfg" "$staged/nexlite.cfg"
+install -m 0644 "$src/prefs/$tier.js" "$staged/browser/defaults/preferences/zen-lite-prefs.js"
+install -m 0644 "$src/zen-lite.cfg" "$staged/zen-lite.cfg"
 cat >"$staged/$MARKER_NAME" <<EOF
-nexlite=$NEXLITE_VERSION
+zen-lite=$ZENLITE_VERSION
 tier=$tier
 zen=$zen_app_version
 release=$release_tag
@@ -244,53 +243,53 @@ profile_args=""
 if [[ -n "$profile" ]]; then
   profile_args="-profile $(printf '%q' "$profile") "
 fi
-cat >"$bin_dir/nexlite" <<EOF
+cat >"$bin_dir/zen-lite" <<EOF
 #!/usr/bin/env bash
-$LAUNCHER_TAG (created by the NexLite installer; re-run it to change this file)
-exec $(printf '%q' "$prefix/zen") --name nexlite --class nexlite ${profile_args}"\$@"
+$LAUNCHER_TAG (created by the Zen Browser Lite installer; re-run it to change this file)
+exec $(printf '%q' "$prefix/zen") --name zen-lite --class zen-lite ${profile_args}"\$@"
 EOF
-chmod 0755 "$bin_dir/nexlite"
+chmod 0755 "$bin_dir/zen-lite"
 
 if ((desktop)); then
-  mkdir -p "$apps_dir" "$icons_dir"
-  install -m 0644 "$src/nexlite.svg" "$icons_dir/nexlite.svg"
-  cat >"$apps_dir/nexlite.desktop" <<EOF
+  mkdir -p "$apps_dir"
+  cat >"$apps_dir/zen-lite.desktop" <<EOF
 [Desktop Entry]
 Type=Application
-Name=NexLite
+Name=Zen Browser Lite
 GenericName=Web Browser
-Comment=Zen Browser with lower memory use
-Exec=$bin_dir/nexlite %u
-Icon=nexlite
+Comment=Unofficial low-memory setup of the official Zen Browser
+Exec=$bin_dir/zen-lite %u
+# Zen's own icon, shipped inside the official build.
+Icon=$prefix/browser/chrome/icons/default/default128.png
 Terminal=false
-StartupWMClass=nexlite
+StartupWMClass=zen-lite
 Categories=Network;WebBrowser;
 MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
 Actions=new-window;new-private-window;
 
 [Desktop Action new-window]
 Name=New Window
-Exec=$bin_dir/nexlite --new-window
+Exec=$bin_dir/zen-lite --new-window
 
 [Desktop Action new-private-window]
 Name=New Private Window
-Exec=$bin_dir/nexlite --private-window
+Exec=$bin_dir/zen-lite --private-window
 EOF
   command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$apps_dir" >/dev/null 2>&1 || true
 fi
 
 if ((set_default)); then
   if ((desktop)) && command -v xdg-settings >/dev/null 2>&1; then
-    xdg-settings set default-web-browser nexlite.desktop && say "NexLite is now the default browser"
+    xdg-settings set default-web-browser zen-lite.desktop && say "Zen Browser Lite is now the default browser"
   else
     warn "could not set the default browser (needs xdg-settings and the menu entry)."
   fi
 fi
 
-say "Installed NexLite $NEXLITE_VERSION ($tier) on Zen $zen_app_version in $prefix"
+say "Installed Zen Browser Lite $ZENLITE_VERSION ($tier) on Zen $zen_app_version in $prefix"
 case ":$PATH:" in
-  *":$bin_dir:"*) say "Start it with: nexlite" ;;
-  *) say "Start it with: $bin_dir/nexlite  (add $bin_dir to PATH to type just 'nexlite')" ;;
+  *":$bin_dir:"*) say "Start it with: zen-lite" ;;
+  *) say "Start it with: $bin_dir/zen-lite  (add $bin_dir to PATH to type just 'zen-lite')" ;;
 esac
 if [[ "$tier" == "max" ]]; then
   warn "the max tier turns off site isolation. See the README for what that means."

@@ -22,8 +22,8 @@ MINT = "#3ddc84"
 TEAL = "#2fd3c4"
 VARIANT_STYLE = {
     "stock": ("Zen (stock)", "#6b7a74"),
-    "lite": ("NexLite lite", TEAL),
-    "max": ("NexLite max", MINT),
+    "lite": ("Lite tier", TEAL),
+    "max": ("Max tier", MINT),
 }
 
 
@@ -80,7 +80,7 @@ def render_chart(res: dict) -> str:
     m = res["method"]
     foot = (f'Zen {escape(res["zen_version"])} · {len(m["sites"])} real sites · '
             f'PSS + SwapPss, median of {m["rounds"]} runs · {escape(res["date"])}')
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Memory use: Zen compared with NexLite">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Memory use: Zen compared with Zen Browser Lite">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0b1412"/><stop offset="1" stop-color="#070c0b"/>
@@ -139,7 +139,7 @@ def render_banner(res: dict) -> str:
     )
     meter_full = 300
     ratio = max(0.04, lite_idle / stock_idle)
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="NexLite: Zen Browser using {pct}% less memory once background tabs are idle">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Zen Browser Lite: Zen Browser using {pct}% less memory once background tabs are idle">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0a1513"/><stop offset="1" stop-color="#060a09"/>
@@ -152,9 +152,6 @@ def render_banner(res: dict) -> str:
     </radialGradient>
     <linearGradient id="ink" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d8ffec"/><stop offset="1" stop-color="{MINT}"/>
-    </linearGradient>
-    <linearGradient id="vane" x1=".2" y1="1" x2=".85" y2="0">
-      <stop offset="0" stop-color="{TEAL}"/><stop offset="1" stop-color="#a6f7c8"/>
     </linearGradient>
     <linearGradient id="meter" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="{TEAL}"/><stop offset="1" stop-color="{MINT}"/>
@@ -200,20 +197,16 @@ def render_banner(res: dict) -> str:
   </g>
   <rect x=".5" y=".5" width="1199" height="319" rx="23.5" fill="none" stroke="#fff" stroke-opacity=".13"/>
 
-  <g transform="translate(70 40) scale(.15)">
-    <rect width="512" height="512" rx="116" fill="#0d1815" stroke="#fff" stroke-opacity=".1" stroke-width="6"/>
-    <path d="M370 104c-92 10-170 72-196 162-9 31-11 62-8 92l34-34 2 46 34-38 8 40 30-40c70-36 112-112 112-190 0-14-6-30-16-38z" fill="url(#vane)"/>
-    <path d="M364 132C292 200 218 290 140 410" stroke="#e9fff4" stroke-width="16" stroke-linecap="round" fill="none"/>
-  </g>
-  <text x="66" y="192" font-family="{FONT_SANS}" font-size="76" font-weight="800" letter-spacing="-2.5" fill="url(#ink)">NexLite</text>
-  <text x="73" y="236" font-family="{FONT_SANS}" font-size="22" fill="#c4d4cc">Zen Browser on a memory diet</text>
+  <text class="cap" x="73" y="92">UNOFFICIAL · RUNS THE OFFICIAL ZEN BUILD</text>
+  <text x="66" y="178" font-family="{FONT_SANS}" font-size="72" font-weight="800" letter-spacing="-2.5" fill="url(#ink)">Zen Browser Lite</text>
+  <text x="73" y="222" font-family="{FONT_SANS}" font-size="22" fill="#c4d4cc">The same Zen, on a memory diet</text>
   <g transform="translate(73 260)">
     <rect width="214" height="32" rx="16" fill="{MINT}" fill-opacity=".16" stroke="{MINT}" stroke-opacity=".55"/>
     <text class="chip" x="107" y="21" text-anchor="middle">-{pct}% RAM when idle</text>
-    <rect x="226" width="168" height="32" rx="16" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".16"/>
-    <text class="chip" x="310" y="21" text-anchor="middle">official Zen build</text>
-    <rect x="406" width="150" height="32" rx="16" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".16"/>
-    <text class="chip" x="481" y="21" text-anchor="middle">no rebuild</text>
+    <rect x="226" width="200" height="32" rx="16" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".16"/>
+    <text class="chip" x="326" y="21" text-anchor="middle">same Zen, same look</text>
+    <rect x="438" width="130" height="32" rx="16" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".16"/>
+    <text class="chip" x="503" y="21" text-anchor="middle">no rebuild</text>
   </g>
 
   {''.join(pills)}

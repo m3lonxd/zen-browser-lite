@@ -1,6 +1,6 @@
-// NexLite "lite" profile: default prefs for Zen Browser.
+// Zen Browser Lite "lite" profile: default prefs for Zen Browser.
 //
-// Installed as browser/defaults/preferences/nexlite-prefs.js in the Zen folder. These are
+// Installed as browser/defaults/preferences/zen-lite-prefs.js in the Zen folder. These are
 // *default* values: anything changed in about:config or Settings still wins, and
 // "Reset" in about:config returns to the value below.
 //
@@ -17,11 +17,11 @@ pref("dom.ipc.processPrelaunch.enabled", false);
 pref("dom.ipc.processCount.webIsolated", 1);
 
 // --- Unloading idle tabs ------------------------------------------------------------
-// Timed unloader from nexlite.cfg: unload a background tab after 10 minutes unused.
-pref("nexlite.unloader.enabled", true);
-pref("nexlite.unloader.after-seconds", 600);
-pref("nexlite.unloader.check-seconds", 60);
-pref("nexlite.unloader.include-pinned", false);
+// Timed unloader from zen-lite.cfg: unload a background tab after 10 minutes unused.
+pref("zenlite.unloader.enabled", true);
+pref("zenlite.unloader.after-seconds", 600);
+pref("zenlite.unloader.check-seconds", 60);
+pref("zenlite.unloader.include-pinned", false);
 // Firefox's own low-memory unloader is off on Linux by default. Turn it on and let it
 // act when less than 15% of RAM is available (default 5%, which is already swapping).
 pref("browser.tabs.unloadOnLowMemory", true);

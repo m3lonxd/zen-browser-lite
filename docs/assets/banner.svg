@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Zen Browser Lite: Zen Browser using 60% less memory once background tabs are idle">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1513"/><stop offset="1" stop-color="#060a09"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#3ddc84" stop-opacity=".38"/><stop offset="1" stop-color="#3ddc84" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#2fd3c4" stop-opacity=".28"/><stop offset="1" stop-color="#2fd3c4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d8ffec"/><stop offset="1" stop-color="#3ddc84"/>
+    </linearGradient>
+    <linearGradient id="meter" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2fd3c4"/><stop offset="1" stop-color="#3ddc84"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity=".035"/>
+    </pattern>
+    <clipPath id="card"><rect width="1200" height="320" rx="24"/></clipPath>
+    <style>
+      .orb { animation: drift 16s ease-in-out infinite alternate; }
+      .orb2 { animation: drift2 20s ease-in-out infinite alternate; }
+      .ptxt { font: 500 14px 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #e6fff3; }
+      .zz { font: 500 11px 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #6d827a; opacity: 0; }
+      .pbg { fill: #fff; fill-opacity: .08; stroke: #fff; stroke-opacity: .16; }
+      .dot { fill: #3ddc84; }
+      .active .pbg { fill: #3ddc84; fill-opacity: .16; stroke: #3ddc84; stroke-opacity: .6; }
+      .pill:not(.active) .pbg { animation: pbg 9s ease-in-out infinite; }
+      .pill:not(.active) .dot { animation: dot 9s ease-in-out infinite; }
+      .pill:not(.active) .ptxt { animation: ptxt 9s ease-in-out infinite; }
+      .pill:not(.active) .zz { animation: zz 9s ease-in-out infinite; }
+      .p1 .pbg, .p1 .dot, .p1 .ptxt { animation-delay: 1.15s; }
+      .p1 .zz { animation-delay: 1.15s; }
+      .p2 .pbg, .p2 .dot, .p2 .ptxt { animation-delay: 1.70s; }
+      .p2 .zz { animation-delay: 1.70s; }
+      .p3 .pbg, .p3 .dot, .p3 .ptxt { animation-delay: 2.25s; }
+      .p3 .zz { animation-delay: 2.25s; }
+      .p4 .pbg, .p4 .dot, .p4 .ptxt { animation-delay: 2.80s; }
+      .p4 .zz { animation-delay: 2.80s; }
+      .p5 .pbg, .p5 .dot, .p5 .ptxt { animation-delay: 3.35s; }
+      .p5 .zz { animation-delay: 3.35s; }
+      .bar { transform-box: fill-box; transform-origin: left center; animation: meter 9s ease-in-out infinite; }
+      .num { font: 700 15px 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #e6fff3; }
+      .cap { font: 500 12px 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #7f948b; letter-spacing: 1px; }
+      .chip { font: 500 14px 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill: #eafff4; }
+      @keyframes drift { from { transform: translate(0,0); } to { transform: translate(120px,24px); } }
+      @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-140px,-16px); } }
+      @keyframes pbg { 0%,8% { fill-opacity: .08; stroke-opacity: .16; } 22%,85% { fill-opacity: .015; stroke-opacity: .07; } 100% { fill-opacity: .08; stroke-opacity: .16; } }
+      @keyframes dot { 0%,8% { fill: #3ddc84; } 22%,85% { fill: #34423d; } 100% { fill: #3ddc84; } }
+      @keyframes ptxt { 0%,8% { fill: #e6fff3; } 22%,85% { fill: #5d6f68; } 100% { fill: #e6fff3; } }
+      @keyframes zz { 0%,8% { opacity: 0; } 22%,85% { opacity: 1; } 100% { opacity: 0; } }
+      @keyframes meter { 0%,12% { transform: scaleX(1); } 55%,85% { transform: scaleX(0.403); } 100% { transform: scaleX(1); } }
+      @media (prefers-reduced-motion: reduce) {
+        .orb, .orb2, .bar, .pill .pbg, .pill .dot, .pill .ptxt, .pill .zz { animation: none; }
+      }
+    </style>
+  </defs>
+  <g clip-path="url(#card)">
+    <rect width="1200" height="320" fill="url(#bg)"/>
+    <rect width="1200" height="320" fill="url(#grid)"/>
+    <circle class="orb" cx="260" cy="80" r="270" fill="url(#glow)"/>
+    <circle class="orb2" cx="1000" cy="280" r="260" fill="url(#glow2)"/>
+  </g>
+  <rect x=".5" y=".5" width="1199" height="319" rx="23.5" fill="none" stroke="#fff" stroke-opacity=".13"/>
+
+  <text class="cap" x="73" y="92">UNOFFICIAL · RUNS THE OFFICIAL ZEN BUILD</text>
+  <text x="66" y="178" font-family="Inter, -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="72" font-weight="800" letter-spacing="-2.5" fill="url(#ink)">Zen Browser Lite</text>
+  <text x="73" y="222" font-family="Inter, -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="22" fill="#c4d4cc">The same Zen, on a memory diet</text>
+  <g transform="translate(73 260)">
+    <rect width="214" height="32" rx="16" fill="#3ddc84" fill-opacity=".16" stroke="#3ddc84" stroke-opacity=".55"/>
+    <text class="chip" x="107" y="21" text-anchor="middle">-60% RAM when idle</text>
+    <rect x="226" width="200" height="32" rx="16" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".16"/>
+    <text class="chip" x="326" y="21" text-anchor="middle">same Zen, same look</text>
+    <rect x="438" width="130" height="32" rx="16" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".16"/>
+    <text class="chip" x="503" y="21" text-anchor="middle">no rebuild</text>
+  </g>
+
+  <g class="pill active" transform="translate(760 34)"><rect width="300" height="30" rx="10" class="pbg"/><circle cx="18" cy="15" r="5" class="dot"/><text x="34" y="20" class="ptxt">wikipedia.org</text><text x="286" y="20" text-anchor="end" class="zz">sleeping</text></g><g class="pill p1" transform="translate(760 70)"><rect width="300" height="30" rx="10" class="pbg"/><circle cx="18" cy="15" r="5" class="dot"/><text x="34" y="20" class="ptxt">github.com</text><text x="286" y="20" text-anchor="end" class="zz">sleeping</text></g><g class="pill p2" transform="translate(760 106)"><rect width="300" height="30" rx="10" class="pbg"/><circle cx="18" cy="15" r="5" class="dot"/><text x="34" y="20" class="ptxt">youtube.com</text><text x="286" y="20" text-anchor="end" class="zz">sleeping</text></g><g class="pill p3" transform="translate(760 142)"><rect width="300" height="30" rx="10" class="pbg"/><circle cx="18" cy="15" r="5" class="dot"/><text x="34" y="20" class="ptxt">bbc.com</text><text x="286" y="20" text-anchor="end" class="zz">sleeping</text></g><g class="pill p4" transform="translate(760 178)"><rect width="300" height="30" rx="10" class="pbg"/><circle cx="18" cy="15" r="5" class="dot"/><text x="34" y="20" class="ptxt">mdn</text><text x="286" y="20" text-anchor="end" class="zz">sleeping</text></g><g class="pill p5" transform="translate(760 214)"><rect width="300" height="30" rx="10" class="pbg"/><circle cx="18" cy="15" r="5" class="dot"/><text x="34" y="20" class="ptxt">news.ycombinator</text><text x="286" y="20" text-anchor="end" class="zz">sleeping</text></g>
+  <g transform="translate(760 282)">
+    <text class="cap" x="0" y="-8">MEMORY</text>
+    <text class="num" x="300" y="-8" text-anchor="end">1.20 GB → 496 MB</text>
+    <rect width="300" height="10" rx="5" fill="#fff" fill-opacity=".07"/>
+    <rect class="bar" width="300" height="10" rx="5" fill="url(#meter)"/>
+  </g>
+</svg>
