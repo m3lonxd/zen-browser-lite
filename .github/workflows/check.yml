@@ -1,0 +1,52 @@
+name: check
+
+# Runs on every change and once a week against the newest Zen release, so a Zen update
+# that renames a pref or breaks the tab unloader shows up as a red badge.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install test dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq --no-install-recommends xvfb xauth shellcheck \
+            libgtk-3-0t64 libdbus-glib-1-2 libasound2t64 libx11-xcb1
+
+      - name: Lint shell scripts
+        run: shellcheck -S style install.sh tests/*.sh
+
+      - name: Download the latest Zen release and verify its checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          read -r url digest < <(gh api repos/zen-browser/desktop/releases/latest \
+            --jq '.assets[] | select(.name == "zen.linux-x86_64.tar.xz") | .browser_download_url + " " + .digest')
+          curl -fsSL --retry 3 -o zen.tar.xz "$url"
+          echo "${digest#sha256:}  zen.tar.xz" | sha256sum -c -
+          mkdir zen-unpacked && tar -xJf zen.tar.xz -C zen-unpacked
+
+      - name: Every NexLite pref exists in this Zen build
+        run: python3 tools/check_prefs.py zen-unpacked/zen src/prefs/lite.js src/prefs/max.js
+
+      - name: Installer tests
+        run: bash tests/test_install.sh zen.tar.xz
+
+      - name: Tab unloader end-to-end (lite)
+        run: bash tests/test_unloader.sh zen.tar.xz lite
+
+      - name: Tab unloader end-to-end (max)
+        run: bash tests/test_unloader.sh zen.tar.xz max
