@@ -5,8 +5,8 @@
 <p align="center">
   <a href="https://github.com/m3lonxd/zen-browser-lite/actions/workflows/check.yml"><img src="https://img.shields.io/github/actions/workflow/status/m3lonxd/zen-browser-lite/check.yml?branch=main&style=flat-square&label=testler%20%2F%20son%20Zen" alt="En yeni Zen sürümüne karşı testler"></a>
   <a href="https://zenbrowserlite.vercel.app"><img src="https://img.shields.io/badge/site-zenbrowserlite.vercel.app-ff453a?style=flat-square" alt="Site"></a>
-  <img src="https://img.shields.io/badge/platform-Linux-3ddc84?style=flat-square" alt="Platform: Linux">
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/lisans-MPL--2.0-2fd3c4?style=flat-square" alt="Lisans: MPL-2.0"></a>
+  <img src="https://img.shields.io/badge/platform-Linux-6287f5?style=flat-square" alt="Platform: Linux">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/lisans-MPL--2.0-7a7870?style=flat-square" alt="Lisans: MPL-2.0"></a>
 </p>
 
 <p align="center"><a href="./README.md">English</a> · <b>Türkçe</b></p>

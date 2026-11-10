@@ -5,9 +5,9 @@
 <p align="center">
   <a href="https://github.com/m3lonxd/zen-browser-lite/actions/workflows/check.yml"><img src="https://img.shields.io/github/actions/workflow/status/m3lonxd/zen-browser-lite/check.yml?branch=main&style=flat-square&label=tests%20vs%20latest%20Zen" alt="Tests against the latest Zen release"></a>
   <a href="https://zenbrowserlite.vercel.app"><img src="https://img.shields.io/badge/site-zenbrowserlite.vercel.app-ff453a?style=flat-square" alt="Site"></a>
-  <img src="https://img.shields.io/badge/platform-Linux-3ddc84?style=flat-square" alt="Platform: Linux">
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MPL--2.0-2fd3c4?style=flat-square" alt="License: MPL-2.0"></a>
-  <a href="https://github.com/zen-browser/desktop"><img src="https://img.shields.io/badge/runs-official%20Zen%20builds-2fd3c4?style=flat-square" alt="Runs official Zen builds"></a>
+  <img src="https://img.shields.io/badge/platform-Linux-6287f5?style=flat-square" alt="Platform: Linux">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MPL--2.0-7a7870?style=flat-square" alt="License: MPL-2.0"></a>
+  <a href="https://github.com/zen-browser/desktop"><img src="https://img.shields.io/badge/runs-official%20Zen%20builds-f76f53?style=flat-square" alt="Runs official Zen builds"></a>
 </p>
 
 <p align="center"><b>English</b> · <a href="./README.tr.md">Türkçe</a></p>
