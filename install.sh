@@ -79,6 +79,12 @@ done
 prefix="$(realpath -m -- "$prefix")"
 [[ "$prefix" != "/" && "$prefix" != "$HOME" ]] || die "refusing to use $prefix as the install folder."
 
+refresh_menu() {
+  if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database "$apps_dir" >/dev/null 2>&1 || true
+  fi
+}
+
 need() { command -v "$1" >/dev/null 2>&1 || die "'$1' is required but not installed."; }
 
 is_running() {
@@ -105,7 +111,7 @@ uninstall() {
     say "Removed $bin_dir/zen-lite"
   fi
   rm -f -- "$apps_dir/zen-lite.desktop"
-  command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$apps_dir" >/dev/null 2>&1 || true
+  refresh_menu
   if command -v xdg-settings >/dev/null 2>&1 &&
     [[ "$(xdg-settings get default-web-browser 2>/dev/null || true)" == "zen-lite.desktop" ]]; then
     warn "Zen Browser Lite was your default browser. Pick a new one in your system settings."
@@ -275,7 +281,7 @@ Exec=$bin_dir/zen-lite --new-window
 Name=New Private Window
 Exec=$bin_dir/zen-lite --private-window
 EOF
-  command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$apps_dir" >/dev/null 2>&1 || true
+  refresh_menu
 fi
 
 if ((set_default)); then
