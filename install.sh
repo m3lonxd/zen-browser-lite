@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-ZENLITE_VERSION="0.1.0"
+ZENLITE_VERSION="0.2.0"
 ZENLITE_REPO="m3lonxd/zen-browser-lite"
 ZENLITE_REF="${ZENLITE_REF:-main}"
 MARKER_NAME=".zen-lite-install"

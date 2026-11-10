@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  check:
+  linux:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
@@ -27,7 +27,7 @@ jobs:
             libgtk-3-0t64 libdbus-glib-1-2 libasound2t64 libx11-xcb1
 
       - name: Lint shell scripts
-        run: shellcheck -S style install.sh tests/*.sh
+        run: shellcheck -S style install.sh install-macos.sh tests/*.sh
 
       - name: Download the latest Zen release and verify its checksum
         env:
@@ -50,3 +50,70 @@ jobs:
 
       - name: Tab unloader end-to-end (max)
         run: bash tests/test_unloader.sh zen.tar.xz max
+
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: powershell   # Windows PowerShell 5.1, what most users have
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download the latest Zen installer and verify its checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $a = gh api repos/zen-browser/desktop/releases/latest --jq '.assets[] | select(.name == "zen.installer.exe") | .browser_download_url + " " + .digest'
+          $url, $digest = $a -split " "
+          Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile zen.installer.exe
+          $h = (Get-FileHash -Algorithm SHA256 zen.installer.exe).Hash.ToLowerInvariant()
+          if ("sha256:$h" -ne $digest) { throw "checksum mismatch" }
+
+      - name: Installer tests (7-Zip)
+        env: { ZENLITE_NO_SETTINGS: "1" }
+        run: .\tests\test_install.ps1 -ZenInstaller zen.installer.exe -Extractor 7z
+
+      - name: Installer tests (built-in tar.exe)
+        env: { ZENLITE_NO_SETTINGS: "1" }
+        run: .\tests\test_install.ps1 -ZenInstaller zen.installer.exe -Extractor tar
+
+      - name: Installer tests (downloaded 7zr.exe)
+        env: { ZENLITE_NO_SETTINGS: "1" }
+        run: .\tests\test_install.ps1 -ZenInstaller zen.installer.exe -Extractor 7zr
+
+      - name: Tab unloader end-to-end (lite and max)
+        run: |
+          foreach ($tier in @("lite", "max")) {
+            $p = Join-Path $env:RUNNER_TEMP "zl-$tier"
+            .\install.ps1 -ZenInstaller zen.installer.exe -Prefix $p -NoShortcut -Tier $tier
+            python tests/e2e_unloader.py --cfg "$p\zen-lite.cfg" --exe "$p\zen.exe" --tier $tier
+            if ($LASTEXITCODE -ne 0) { throw "e2e $tier failed" }
+          }
+
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download the latest Zen disk image and verify its checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          read -r url digest < <(gh api repos/zen-browser/desktop/releases/latest \
+            --jq '.assets[] | select(.name == "zen.macos-universal.dmg") | .browser_download_url + " " + .digest')
+          curl -fsSL --retry 3 -o zen.dmg "$url"
+          echo "${digest#sha256:}  zen.dmg" | shasum -a 256 -c -
+
+      - name: Installer tests
+        run: /bin/bash tests/test_install_macos.sh zen.dmg
+
+      - name: Tab unloader end-to-end (lite and max)
+        run: |
+          for tier in lite max; do
+            home="$RUNNER_TEMP/home-$tier"; mkdir -p "$home"
+            HOME="$home" /bin/bash install-macos.sh --zen-dmg zen.dmg --tier "$tier"
+            app="$home/Applications/Zen Browser Lite.app"
+            python3 tests/e2e_unloader.py --cfg "$app/Contents/Resources/zen-lite.cfg" --exe "$app/Contents/MacOS/zen" --tier "$tier"
+          done
